@@ -54,20 +54,50 @@ void IDFT2D(image_t Output, int Width, int Height, complex_t* DFT)
 
 
 
-    for (u = 0; u < Width; u++)
+    // for (u = 0; u < Width; u++)
+    // {
+    //     for (v = 0; v < Height; v++)
+    //     {
+    //         Sum.Real = 0;
+    //         Sum.Imag = 0;
+
+    //         for (x = 0; x < Width; x++)
+    //         {
+    //             AngleX = 2 * PI * u * x / (double) Width;
+
+    //             for (y = 0; y < Height; y++)
+    //             {
+    //                 AngleY = 2 * PI * v * y / (double) Height;
+
+    //                 CosValue = cos(AngleX + AngleY);
+    //                 SinValue = sin(AngleX + AngleY);
+
+    //                 DFT_Real = DFT[y * Width + x].Real;
+    //                 DFT_Imag = DFT[y * Width + x].Imag;
+
+    //                 Sum.Real += (DFT_Real * CosValue) - (DFT_Imag * SinValue);
+    //                 Sum.Imag += (DFT_Real * SinValue) - (DFT_Imag * CosValue);
+    //             }
+    //         }
+    //         IDFT_Image[v * Width + u].Real = Sum.Real;
+    //         IDFT_Image[v * Width + u].Imag = Sum.Imag;
+    //     }
+    // }
+
+    for (v = 0; v < Height; v++)
     {
-        for (v = 0; v < Height; v++)
+        for (u = 0; u < Width; u++)
         {
             Sum.Real = 0;
             Sum.Imag = 0;
 
-            for (x = 0; x < Width; x++)
+            for (y = 0; y < Height; y++)
             {
-                AngleX = 2 * PI * u * x / (double) Width;
+                AngleY = 2 * PI * v * y / (double) Height;
 
-                for (y = 0; y < Height; y++)
+                for (int x = 0; x < Width; x++)
                 {
-                    AngleY = 2 * PI * v * y / (double) Height;
+                    AngleX = 2 * PI * u * x / (double) Width;
 
                     CosValue = cos(AngleX + AngleY);
                     SinValue = sin(AngleX + AngleY);
@@ -77,17 +107,10 @@ void IDFT2D(image_t Output, int Width, int Height, complex_t* DFT)
 
                     Sum.Real += (DFT_Real * CosValue) - (DFT_Imag * SinValue);
                     Sum.Imag += (DFT_Real * SinValue) - (DFT_Imag * CosValue);
-                
-
                 }
             }
-
-
             IDFT_Image[v * Width + u].Real = Sum.Real;
             IDFT_Image[v * Width + u].Imag = Sum.Imag;
-
-
-
         }
     }
 
@@ -95,14 +118,25 @@ void IDFT2D(image_t Output, int Width, int Height, complex_t* DFT)
 
     double Real, Imag, Mag;
 
-    for (x = 0; x < Width; x++)
-    {
-        for (y = 0; y < Height; y++)
-        {
-            Real = IDFT_Image[x * Height + y].Real;
-            Imag = IDFT_Image[x * Height + y].Imag;
+    // for (x = 0; x < Width; x++)
+    // {
+    //     for (y = 0; y < Height; y++)
+    //     {
+    //         Real = IDFT_Image[x * Height + y].Real;
+    //         Imag = IDFT_Image[x * Height + y].Imag;
 
-            Output[x * Height + y] = round(Real * MN_Inverse);
+    //         Output[x * Height + y] = round(Real * MN_Inverse);
+    //     }
+    // }
+
+    for (y = 0; y < Height; y++)
+    {
+        for (x = 0; x < Width; x++)
+        {
+            Real = IDFT_Image[y * Width + x].Real;
+            Imag = IDFT_Image[y * Width + x].Imag;
+
+            Output[y * Width + x] = round(Real * MN_Inverse);
         }
     }
 
