@@ -16,7 +16,7 @@ void DFT2D(image_t Image, int Width, int Height, complex_t** DFT)
     int u, v;
     complex_t Sum;
     double Angle;
-
+    printf("1\n");
     if (!DFT)
     {
         *DFT = (complex_t*) malloc(sizeof(complex_t) * Width * Height);
@@ -26,7 +26,7 @@ void DFT2D(image_t Image, int Width, int Height, complex_t** DFT)
             exit(1);
         }
     }
-
+    printf("2\n");   
 
     for (u = 0; u < Width; u++)
     {
@@ -48,12 +48,12 @@ void DFT2D(image_t Image, int Width, int Height, complex_t** DFT)
             }
 
             //DFT[u * Height + v] = Sum;
-            DFT[u * Height + v].Real = Sum.Real;
-            DFT[u * Height + v].Imag = Sum.Imag;
+            (*DFT)[u * Height + v].Real = Sum.Real;
+            (*DFT)[u * Height + v].Imag = Sum.Imag;
         }
     }
 
-
+    printf("3\n");
 
 }
 

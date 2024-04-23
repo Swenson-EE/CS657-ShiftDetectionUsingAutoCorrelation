@@ -7,11 +7,11 @@
 
 
 
-struct complex_t
+typedef struct 
 {
     double Real;
     double Imag;
-};
+} complex_t;
 
 typedef unsigned char* image_t; 
 

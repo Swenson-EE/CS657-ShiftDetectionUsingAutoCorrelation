@@ -6,12 +6,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <malloc.h>  
 #include <memory.h>
+//#include <malloc.h>  
+
+#include "minimal.h"
 
 
 
-void ReadPGM(char* FileName, int* xdimension, int* ydimension, int* MaxRaw, char** Image)
+void ReadPGM(char* FileName, int* xdimension, int* ydimension, int* MaxRaw, image_t* Image)
 {
     int c;
     int i,j;
@@ -24,7 +26,6 @@ void ReadPGM(char* FileName, int* xdimension, int* ydimension, int* MaxRaw, char
 
     /* begin reading PGM.... */
     printf("begin reading PGM.... \n");
-    //if ((fp=fopen(argv[1], "rb"))==NULL){
     if ((fp=fopen(FileName, "rb"))==NULL)
     {
         printf("read error...\n");
@@ -35,17 +36,18 @@ void ReadPGM(char* FileName, int* xdimension, int* ydimension, int* MaxRaw, char
 
     while ((c=fgetc(fp)) == '#')
         fgets(buf, 1024, fp);
-        ungetc(c, fp);
-        if (fscanf(fp, "P%d\n", &c) != 1) {
-            printf ("read error ....");
-            exit(0);
-        }
-        if (c != 5 && c != 2) {
-            printf ("read error ....");
-            exit(0);
-        }
+    ungetc(c, fp);
 
-        if (c==5) {
+    if (fscanf(fp, "P%d\n", &c) != 1) {
+        printf ("read error ....");
+        exit(0);
+    }
+    if (c != 5 && c != 2) {
+        printf ("read error ....");
+        exit(0);
+    }
+
+    if (c==5) {
         while ((c=fgetc(fp)) == '#')
             fgets(buf, 1024, fp);
         ungetc(c, fp);
@@ -62,14 +64,14 @@ void ReadPGM(char* FileName, int* xdimension, int* ydimension, int* MaxRaw, char
         for (j=0; j<ydim; j++) {
             fread(line, 1, xdim, fp);
             for (i=0; i<xdim; i++) {
-                *Image[j*xdim+i] = line[i];
+                (*Image)[j*xdim+i] = line[i];
             }
         }
         free(line);
 
-        }
+    }
 
-        else if (c==2) {
+    else if (c==2) {
         while ((c=fgetc(fp)) == '#')
             fgets(buf, 1024, fp);
         ungetc(c, fp);
@@ -85,18 +87,17 @@ void ReadPGM(char* FileName, int* xdimension, int* ydimension, int* MaxRaw, char
         for (j=0; j<ydim; j++)
             for (i=0; i<xdim; i++) {
                 fscanf(fp, "%d", &val);
-                *Image[j*xdim+i] = val;
+                (*Image)[j*xdim+i] = val;
             }
 
-        }
+    }
 
-        fclose(fp);
+    fclose(fp);
 
 
-        *xdimension = xdim;
-        *ydimension = ydim;
-        *MaxRaw = maxraw;
-
+    *xdimension = xdim;
+    *ydimension = ydim;
+    *MaxRaw = maxraw;
 }
 
 
