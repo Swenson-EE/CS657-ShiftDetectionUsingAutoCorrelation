@@ -11,7 +11,7 @@
 
 
 
-void ReadPGM(char* FileName, int* xdimension, int* ydimension, int* MaxRaw, char* Image)
+void ReadPGM(char* FileName, int* xdimension, int* ydimension, int* MaxRaw, char** Image)
 {
     int c;
     int i,j;
@@ -55,14 +55,14 @@ void ReadPGM(char* FileName, int* xdimension, int* ydimension, int* MaxRaw, char
         }
         printf("Width=%d, Height=%d \nMaximum=%d\n",xdim,ydim,maxraw);
 
-        Image = (unsigned char*)malloc(sizeof(unsigned char)*xdim*ydim);
+        *Image = (unsigned char*)malloc(sizeof(unsigned char)*xdim*ydim);
         getc(fp);
 
         line = (unsigned char *)malloc(sizeof(unsigned char)*xdim);
         for (j=0; j<ydim; j++) {
             fread(line, 1, xdim, fp);
             for (i=0; i<xdim; i++) {
-                Image[j*xdim+i] = line[i];
+                *Image[j*xdim+i] = line[i];
             }
         }
         free(line);
@@ -79,13 +79,13 @@ void ReadPGM(char* FileName, int* xdimension, int* ydimension, int* MaxRaw, char
         }
         printf("Width=%d, Height=%d \nMaximum=%d,\n",xdim,ydim,maxraw);
 
-        Image = (unsigned char*)malloc(sizeof(unsigned char)*xdim*ydim);
+        *Image = (unsigned char*)malloc(sizeof(unsigned char)*xdim*ydim);
         getc(fp);
 
         for (j=0; j<ydim; j++)
             for (i=0; i<xdim; i++) {
                 fscanf(fp, "%d", &val);
-                Image[j*xdim+i] = val;
+                *Image[j*xdim+i] = val;
             }
 
         }

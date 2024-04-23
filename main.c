@@ -17,6 +17,9 @@ By: Jesse Yeomans and Tyler Swenson
 #include "read-pgm.h"
 #include "write-pgm.h"
 
+#include "dft.h"
+#include "idft.h"
+
 
 #define max(x, y) ((x>y) ? (x):(y))
 #define min(x, y) ((x<y) ? (x):(y))
@@ -27,7 +30,7 @@ int ydim;
 int maxraw;
 unsigned char *image;
 
-
+complex_t* DFT;
 
 
 
@@ -35,6 +38,10 @@ int main(int argc, char **argv)
 {
   int i, j;
   //FILE *fp;
+
+  argc = 3;
+  argc[1] = "Knee.pgm";
+  argc[2] = "Output.pgm";
 
   if (argc != 3){
     printf("Usage: MyProgram <input_ppm> <output_ppm> \n");
@@ -46,12 +53,17 @@ int main(int argc, char **argv)
   char* InputFileName   = argc[1];
   char* OutputFileName  = argc[2];
 
+  
 
   
   //ReadPGM(fp);
   ReadPGM(InputFileName, *xdim, *ydim, *maxraw, image);
  
   // TODO: our application here 
+  DFT2D(image, xdim, ydim, &DFT);
+
+  IDFT2D(image, xdim, ydim, DFT);
+
   
   
   /* Begin writing PGM.... */
