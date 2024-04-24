@@ -12,7 +12,7 @@
 
 
 
-void WritePGM(char* FileName, int xdim, int ydim, image_t image)
+void WritePGM(char* FileName, int xdim, int ydim, image_t* image)
 {
     int i,j;
 

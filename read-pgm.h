@@ -13,7 +13,7 @@
 
 
 
-void ReadPGM(char* FileName, int* xdimension, int* ydimension, int* MaxRaw, image_t* Image)
+void ReadPGM(char* FileName, int* xdimension, int* ydimension, int* MaxRaw, image_t** Image)
 {
     int c;
     int i,j;

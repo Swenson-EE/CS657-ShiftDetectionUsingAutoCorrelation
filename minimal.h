@@ -13,7 +13,7 @@ typedef struct
     double Imag;
 } complex_t;
 
-typedef unsigned char* image_t; 
+typedef unsigned char image_t; 
 
 
 

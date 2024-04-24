@@ -27,7 +27,8 @@ By: Jesse Yeomans and Tyler Swenson
 int xdim;
 int ydim;
 int maxraw;
-image_t image;
+image_t* image;
+image_t* Output;
 
 complex_t* DFT;
 
@@ -57,22 +58,28 @@ int main(int argc, char **argv)
   
   //ReadPGM(fp);
   ReadPGM(InputFileName, &xdim, &ydim, &maxraw, &image);
+
+  printf("Read Image: width: %d, height: %d\n\n", xdim, ydim);
+
  
   // TODO: our application here 
-  printf("dft 1\n");
+  printf("dft start\n");
   DFT2D(image, xdim, ydim, &DFT);
-  printf("dft 2\n");
-
-  printf("idft 1\n");
-  IDFT2D(image, xdim, ydim, DFT);
-  printf("idft 2\n");
-
+  printf("dft finish\n");
+  
+  printf("idft start\n");
+  //IDFT2D(&Output, xdim, ydim, DFT);
+  IDFT2D(DFT, xdim, ydim, &Output);
+  printf("idft finish\n");
+  
   
   
   /* Begin writing PGM.... */
-  WritePGM(OutputFileName, xdim, ydim, image);
+  //WritePGM(OutputFileName, xdim, ydim, image);
+  WritePGM(OutputFileName, xdim, ydim, Output);
 
   free(image);
+  free(Output);
 
   return (1);
 }
