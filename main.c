@@ -18,6 +18,7 @@ By: Jesse Yeomans and Tyler Swenson
 
 
 #include "shift-image.h"
+#include "zero-padding.h"
 
 #include "dft.h"
 #include "idft.h"
@@ -27,11 +28,17 @@ By: Jesse Yeomans and Tyler Swenson
 #define min(x, y) ((x<y) ? (x):(y))
 
 
-int xdim;
-int ydim;
+int Width;
+int Height;
 int maxraw;
-image_t* image;
+
+int PaddedWidth, PaddedHeight;
+
+image_t* InputImage;
 image_t* ShiftedImage;
+
+image_t* ZeropaddedImage;
+
 image_t* Output;
 
 complex_t* DFT;
@@ -47,6 +54,10 @@ int main(int argc, char **argv)
   int i, j;
   //FILE *fp;
 
+
+
+
+  // Assign main arguments for testing
   argc = 4;
   argv[1] = "test-img.pgm";
   argv[2] = "shifted-image.pgm";
@@ -69,41 +80,73 @@ int main(int argc, char **argv)
 
   
   //ReadPGM(fp);
-  ReadPGM(InputFileName, &xdim, &ydim, &maxraw, &image);
+  ReadPGM(InputFileName, &Width, &Height, &maxraw, &InputImage);
+  printf("Read Image: width: %d, height: %d\n\n", Width, Height);
 
-  printf("Read Image: width: %d, height: %d\n\n", xdim, ydim);
+
+  PaddedWidth = (2 * Width) - 1;
+  PaddedHeight = (2 * Height) - 1;
 
   
   // TODO: our application here 
 
-  image_shift_info_t shift_info = {
-    .InImage = image,
-    .Width = xdim,
-    .Height = ydim,
-    .ShiftX = x_shift,
-    .ShiftY = y_shift,
-    .OutImage = &ShiftedImage,
-  };
+  // DFT and IDFT Testing
+  // DFT2D(InputImage, Width, Height, &DFT);
+  // IDFT2D(DFT, Width, Height, &IDFT, &Output);
+  // WritePGM(OutputFileName, Width, Height, Output);
 
-  ShiftImage(&shift_info);
-  WritePGM(ShiftedFileName, xdim, ydim, ShiftedImage);
+
+  // Image Shifting
+  // image_shift_info_t shift_info = {
+  //   .InImage = InputImage,
+  //   .Width = Width,
+  //   .Height = Height,
+  //   .ShiftX = x_shift,
+  //   .ShiftY = y_shift,
+  //   .OutImage = &ShiftedImage,
+  // };
+
+  // ShiftImage(&shift_info);
+  // WritePGM(ShiftedFileName, Width, Height, ShiftedImage);
+
+
+  
+  // -------------------------------------------------------------------- //
+  //                                                                      //
+  //                          Zero Padding                                //
+  //                                                                      //
+  // -------------------------------------------------------------------- //
+
+
+  // zeropad_info_t ZeropadInfo = {
+  //   .InImage = InputImage,
+  //   .Width = Width,
+  //   .Height = Height,
+  //   .PaddedWidth = PaddedWidth,
+  //   .PaddedHeight = PaddedHeight,
+  //   .OutImage = &ZeropaddedImage,
+  // };
+
+  // Zeropad(&ZeropadInfo);
+  // WritePGM("Zeropad.pgm", PaddedWidth, PaddedHeight, ZeropaddedImage);
+
+  // DFT2D(ZeropaddedImage, PaddedWidth, PaddedHeight, &DFT);
+  // IDFT2D(DFT, PaddedWidth, PaddedHeight, &IDFT, &Output);
+  // WritePGM(OutputFileName, PaddedWidth, PaddedHeight, Output);
+
+  // -------------------------------------------------------------------- //
+  //                                                                      //
+  //                          Zero Padding End                            //
+  //                                                                      //
+  // -------------------------------------------------------------------- //
+  
+
 
   
 
-  DFT2D(image, xdim, ydim, &DFT);
-  
-
-  //IDFT2D(&Output, xdim, ydim, DFT);
-  IDFT2D(DFT, xdim, ydim, &IDFT, &Output);
-  
-  
-  
-  /* Begin writing PGM.... */
-  //WritePGM(OutputFileName, xdim, ydim, image);
-  WritePGM(OutputFileName, xdim, ydim, Output);
-
-  free(image);
+  free(InputImage);
   free(ShiftedImage);
+  free(ZeropaddedImage);
   free(Output);
 
   free(DFT);

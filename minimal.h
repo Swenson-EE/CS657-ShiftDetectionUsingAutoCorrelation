@@ -3,7 +3,16 @@
 
 
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+// #include <malloc.h>  
+#include <memory.h>
+
+
 #define DEBUG       1
+#define DEBUG_DATA  1
 
 
 
@@ -19,13 +28,22 @@
 #endif
 
 
+#if DEBUG_DATA
+    #define DEBUG_DATA_LOG(TAG, MESSAGE, ...) LOG(TAG, MESSAGE, ##__VA_ARGS__)
+#else
+    #define DEBUG_DATA_LOG(TAG, MESSAGE, ...)
+#endif
 
-#define SHIFT_IMAGE_TAG             "ShiftImage"
+
+
+
+#define SHIFT_IMAGE_TAG             "SHIFT IMAGE"
 #define DFT_TAG                     "DFT"
 #define IDFT_TAG                    "IDFT"
+#define ZERO_PAD_TAG                "ZERO PADDING"
 
-#define READ_PGM_TAG                "READ_PGM"
-#define WRITE_PGM_TAG               "WRITE_PGM"
+#define READ_PGM_TAG                "READ PGM"
+#define WRITE_PGM_TAG               "WRITE PGM"
 
 
 
