@@ -31,6 +31,7 @@ image_t* image;
 image_t* Output;
 
 complex_t* DFT;
+complex_t* IDFT;
 
 
 
@@ -67,9 +68,10 @@ int main(int argc, char **argv)
   DFT2D(image, xdim, ydim, &DFT);
   printf("dft finish\n");
   
+
   printf("idft start\n");
   //IDFT2D(&Output, xdim, ydim, DFT);
-  IDFT2D(DFT, xdim, ydim, &Output);
+  IDFT2D(DFT, xdim, ydim, &IDFT, &Output);
   printf("idft finish\n");
   
   
@@ -81,7 +83,7 @@ int main(int argc, char **argv)
   free(image);
   free(Output);
 
-  return (1);
+  return (0);
 }
 
 

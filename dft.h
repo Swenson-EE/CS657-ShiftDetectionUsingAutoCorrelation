@@ -97,7 +97,7 @@ void DFT2D(image_t* Image, int Width, int Height, complex_t** OutDFT)
 
     complex_t* DFT;
     complex_t Sum;
-    double Angle;
+    double Angle, PixelValue;
     
     /*
     if (!(*DFT))
@@ -117,7 +117,11 @@ void DFT2D(image_t* Image, int Width, int Height, complex_t** OutDFT)
     }
 
 
-    if (!(*OutDFT))
+    if (*OutDFT)
+    {
+        DFT = *OutDFT;
+    }
+    else
     {
         DFT = (complex_t*) malloc(sizeof(complex_t) * Width * Height);
         if (!DFT)
@@ -129,39 +133,89 @@ void DFT2D(image_t* Image, int Width, int Height, complex_t** OutDFT)
 
 
     // Calculate DFT for rows
-    for (y = 0; y < Height; y++)
-    {
-        for (u = 0; u < Width; u++)
-        {
-            DFT[y * Width + u].Real = 0;
-            DFT[y * Width + u].Imag = 0;
+    // for (y = 0; y < Height; y++)
+    // {
+    //     for (u = 0; u < Width; u++)
+    //     {
+    //         DFT[y * Width + u].Real = 0;
+    //         DFT[y * Width + u].Imag = 0;
 
-            for (x = 0; x < Width; x++)
-            {
-                Angle = (2 * PI * u * x) / Width;
+    //         for (x = 0; x < Width; x++)
+    //         {
+    //             Angle = (2 * PI * u * x) / Width;
                 
-                DFT[y * Width + u].Real += Image[y * Width + x] * cos(Angle);
-                DFT[y * Width + u].Imag += -Image[y * Width + x] * sin(Angle);
+    //             DFT[y * Width + u].Real += Image[y * Width + x] * cos(Angle);
+    //             DFT[y * Width + u].Imag += -Image[y * Width + x] * sin(Angle);
+    //         }
+    //     }
+    // }
+
+    // Calculate DFT for rows
+    for (v = 0; v < Height; v++)
+    {
+        for (x = 0; x < Width; x++)
+        {
+            //DFT[v * Width + x].Real = 0;
+            //DFT[v * Width + x].Imag = 0;
+            Sum.Real = 0;
+            Sum.Imag = 0;
+
+
+            for (u = 0; u < Width; u++)
+            {
+                Angle = 2.0 * PI * ((double) (x * u)) / Width;
+                PixelValue = (double) Image[v * Width + u];
+
+                Sum.Real += PixelValue * cos(Angle);
+                Sum.Imag += -PixelValue * sin(Angle);
             }
+
+            DFT[v * Width + x] = Sum;
+
         }
     }
+
+
 
     // Calculate DFT for columns
-    for (x = 0; x < Width; x++)
-    {
-        for (v = 0; v < Height; v++)
-        {
-            for (y = 0; y < Height; y++)
-            {
-                Angle = (2 * PI * v * y) / Height;
+    // for (x = 0; x < Width; x++)
+    // {
+    //     for (v = 0; v < Height; v++)
+    //     {
+    //         for (y = 0; y < Height; y++)
+    //         {
+    //             Angle = (2 * PI * v * y) / Height;
 
-                DFT[v * Width + x].Real += Image[y * Width + x] * cos(Angle);
-                DFT[v * Width + x].Imag += -Image[y * Width + x] * sin(Angle);
+    //             DFT[v * Width + x].Real += Image[y * Width + x] * cos(Angle);
+    //             DFT[v * Width + x].Imag += -Image[y * Width + x] * sin(Angle);
+    //         }
+    //     }
+    // }
+
+    // Calculate DFT for columns
+    for (u = 0; u < Width; u++)
+    {
+        for (y = 0; y < Height; y++)
+        {
+            Sum.Real = 0;
+            Sum.Imag = 0;
+
+            for (v = 0; v < Height; v++)
+            {
+                Angle = 2.0 * PI * ((double) (y * v) / Height);
+                PixelValue = (double) Image[v * Width + u];
+
+                Sum.Real += PixelValue * cos(Angle);
+                Sum.Imag += -PixelValue * sin(Angle);
             }
+
+            DFT[y * Width + u].Real += Sum.Real;
+            DFT[y * Width + u].Imag += Sum.Imag;
+            
+
         }
     }
-
-
+    
 
 
 
