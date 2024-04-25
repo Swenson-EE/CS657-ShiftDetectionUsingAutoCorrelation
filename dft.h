@@ -10,7 +10,17 @@
 #include "minimal.h"
 
 
-void DFT2D(image_t* Image, int Width, int Height, complex_t** OutDFT)
+typedef struct 
+{
+    image_t* Image;
+    int Width;
+    int Height;
+    complex_t** OutDFT;
+} dft_config_t;  
+
+
+//void DFT2D(image_t* Image, int Width, int Height, complex_t** OutDFT)
+void DFT2D(dft_config_t* config)
 {
     int x, y;
     int u, v;
@@ -18,6 +28,15 @@ void DFT2D(image_t* Image, int Width, int Height, complex_t** OutDFT)
     complex_t* DFT;
     complex_t Sum;
     double Angle, PixelValue;
+
+    
+    image_t* Image;
+    int Width, Height;
+
+    Image = config->Image;
+    Width = config->Width;
+    Height = config->Height;
+
 
 
     DEBUG_LOG(DFT_TAG, "Start");

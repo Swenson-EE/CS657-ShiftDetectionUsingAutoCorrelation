@@ -98,16 +98,16 @@ int main(int argc, char **argv)
 
 
   // Image Shifting
-  // image_shift_info_t shift_info = {
-  //   .InImage = InputImage,
-  //   .Width = Width,
-  //   .Height = Height,
-  //   .ShiftX = x_shift,
-  //   .ShiftY = y_shift,
-  //   .OutImage = &ShiftedImage,
-  // };
+  image_shift_info_t shift_info = {
+    .InImage = InputImage,
+    .Width = Width,
+    .Height = Height,
+    .ShiftX = x_shift,
+    .ShiftY = y_shift,
+    .OutImage = &ShiftedImage,
+  };
 
-  // ShiftImage(&shift_info);
+  ShiftImage(&shift_info);
   // WritePGM(ShiftedFileName, Width, Height, ShiftedImage);
 
 

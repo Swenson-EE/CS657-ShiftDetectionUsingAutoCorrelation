@@ -36,7 +36,7 @@ void ShiftImage(image_shift_info_t* shift_info)
 
 
     DEBUG_LOG("ShiftImage", "Start");
-
+    shift_info->Width = 0;
 
     if (*(shift_info->OutImage))
     {
