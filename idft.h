@@ -208,35 +208,6 @@ void IDFT2D(complex_t* DFT, int Width, int Height, complex_t** OutIDFT, image_t*
     MN_Inverse = 1 / (double)(Width * Height);
 
 
-
-    // Calculate IDFT for rows
-    // for (v = 0; v < Height; v++)
-    // {
-    //     for (x = 0; x < Width; x++)
-    //     {
-    //         IDFT_Image[v * Width + x].Real = 0;
-    //         IDFT_Image[v * Width + x].Imag = 0;
-
-    //         for (u = 0; u < Width; u++)
-    //         {
-    //             Angle = (2 * PI * u * x) / Width;
-    //             CosValue = cos(Angle);
-    //             SinValue = sin(Angle);
-
-    //             DFT_Real = DFT[v * Width + u].Real;
-    //             DFT_Imag = DFT[v * Width + u].Imag;
-                
-    //             //Sum.Real += (DFT_Real * CosValue) - (DFT_Imag * SinValue);
-    //             //Sum.Imag += (DFT_Real * SinValue) - (DFT_Imag * CosValue);
-                
-    //             IDFT_Image[v * Width + x].Real += (DFT_Real * CosValue) - (DFT_Imag * SinValue);
-    //             IDFT_Image[v * Width + x].Imag += (DFT_Real * SinValue) - (DFT_Imag * CosValue);
-
-    //         }
-
-    //     }
-    // }
-
     // Calculate IDFT for rows
     for (y = 0; y < Height; y++)
     {
@@ -269,30 +240,6 @@ void IDFT2D(complex_t* DFT, int Width, int Height, complex_t** OutIDFT, image_t*
 
 
     // Calculate IDFT for columns
-    // for (u = 0; u < Width; u++)
-    // {
-    //     for (y = 0; y < Height; y++)
-    //     {
-
-    //         for (v = 0; v < Height; v++)
-    //         {
-    //             Angle = (2 * PI * v * y) / Height;
-    //             CosValue = cos(Angle);
-    //             SinValue = sin(Angle);
-
-    //             DFT_Real = DFT[v * Width + u].Real;
-    //             DFT_Imag = DFT[v * Width + u].Imag;
-                
-    //             //Sum.Real += (DFT_Real * CosValue) - (DFT_Imag * SinValue);
-    //             //Sum.Imag += (DFT_Real * SinValue) - (DFT_Imag * CosValue);
-                
-    //             IDFT_Image[y * Width + u].Real += (DFT_Real * CosValue) - (DFT_Imag * SinValue);
-    //             IDFT_Image[y * Width + u].Imag += (DFT_Real * SinValue) - (DFT_Imag * CosValue);
-
-    //         }
-
-    //     }
-    // }
     for (x = 0; x < Width; x++)
     {
         for (y = 0; y < Height; y++)
@@ -319,47 +266,6 @@ void IDFT2D(complex_t* DFT, int Width, int Height, complex_t** OutIDFT, image_t*
 
         }
     }
-
-
-    // double MaxMag;
-    // double Real, Imag, Mag;
-    // for (y = 0; y < Height; y++)
-    // {
-    //     for (x = 0; x < Width; x++)
-    //     {
-    //         Real = IDFT_Image[y * Width + x].Real;
-    //         Imag = IDFT_Image[y * Width + x].Imag;
-
-    //         Mag = sqrt((Real * Real) + (Imag * Imag));
-
-    //         if (Mag > MaxMag)
-    //         {
-    //             MaxMag = Mag;
-    //             printf("New Max Mag: %lf\n", Mag);
-    //         }
-    //     }
-    // }
-
-    // for (y = 0; y < Height; y++)
-    // {
-    //     for (x = 0; x < Width; x++)
-    //     {
-    //         Real = IDFT_Image[y * Width + x].Real;
-    //         Imag = IDFT_Image[y * Width + x].Imag;
-
-    //         Mag = sqrt((Real * Real) + (Imag * Imag));
-
-    //         Output[y * Width + x] = (unsigned char) (Real * MN_Inverse);
-    //         printf("Output: x: %d, y: %d, val: %x\n", x, y, Output[y * Width + x]);
-    //     }
-    // }
-
-
-
-
-    //(*OutImage) = Output;
-    //(*OutIDFT) = IDFT_Image;
-
 
 
     DEBUG_LOG(IDFT_TAG, "End");

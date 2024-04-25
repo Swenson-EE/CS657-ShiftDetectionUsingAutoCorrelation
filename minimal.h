@@ -64,5 +64,16 @@ typedef unsigned char image_t;
 
 
 
+typedef struct
+{
+    image_t* Image;
+    int Width;
+    int Height;
+    complex_t* DFT;
+} image_info_t;
+
+
+
+
 
 #endif
