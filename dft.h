@@ -98,6 +98,10 @@ void DFT2D(image_t* Image, int Width, int Height, complex_t** OutDFT)
     complex_t* DFT;
     complex_t Sum;
     double Angle, PixelValue;
+
+
+    DEBUG_LOG(DFT_TAG, "Start");
+
     
     /*
     if (!(*DFT))
@@ -129,6 +133,8 @@ void DFT2D(image_t* Image, int Width, int Height, complex_t** OutDFT)
             printf("Could not allocate memory for DFT\n");
             exit(1);
         }
+
+        *OutDFT = DFT;
     }
 
 
@@ -220,7 +226,9 @@ void DFT2D(image_t* Image, int Width, int Height, complex_t** OutDFT)
 
 
 
-    *OutDFT = DFT;
+    //*OutDFT = DFT;
+
+    DEBUG_LOG(DFT_TAG, "End");
 }
 
 

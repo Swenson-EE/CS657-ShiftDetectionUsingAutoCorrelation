@@ -160,6 +160,9 @@ void IDFT2D(complex_t* DFT, int Width, int Height, complex_t** OutIDFT, image_t*
     image_t* Output;
 
 
+    DEBUG_LOG(IDFT_TAG, "Start");
+
+
     if (!DFT)
     {
         printf("No DFT provided\n");
@@ -180,6 +183,8 @@ void IDFT2D(complex_t* DFT, int Width, int Height, complex_t** OutIDFT, image_t*
             printf("Could not allocate memory for Output Image\n");
             exit(1);
         }
+
+        (*OutImage) = Output;
     }
 
     
@@ -195,6 +200,8 @@ void IDFT2D(complex_t* DFT, int Width, int Height, complex_t** OutIDFT, image_t*
             printf("Could not allocate memory for IDFT_Image\n");
             exit(1);
         }
+
+        (*OutIDFT) = IDFT_Image;
     }
 
 
@@ -350,8 +357,12 @@ void IDFT2D(complex_t* DFT, int Width, int Height, complex_t** OutIDFT, image_t*
 
 
 
-    (*OutImage) = Output;
-    (*OutIDFT) = IDFT_Image;
+    //(*OutImage) = Output;
+    //(*OutIDFT) = IDFT_Image;
+
+
+
+    DEBUG_LOG(IDFT_TAG, "End");
 }
 
 

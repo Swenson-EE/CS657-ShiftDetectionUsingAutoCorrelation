@@ -18,8 +18,15 @@ void WritePGM(char* FileName, int xdim, int ydim, image_t* image)
 
     FILE* fp;
 
-    /* Begin writing PGM.... */
-    printf("Begin writing PGM.... \n");
+    
+    if (!image)
+    {
+        DEBUG_LOG(WRITE_PGM_TAG, "No image provided. File: %s", FileName);
+        exit(1);
+    }
+
+    
+    DEBUG_LOG(WRITE_PGM_TAG, "Begin writing PGM (%s)...", FileName);
     if ((fp=fopen(FileName, "wb")) == NULL){
         printf("write pgm error....\n");
         exit(0);
@@ -33,7 +40,8 @@ void WritePGM(char* FileName, int xdim, int ydim, image_t* image)
         }
 
     fclose(fp);
-  
+    
+    DEBUG_LOG(WRITE_PGM_TAG, "Finished writing PGM...");
 }
 
 

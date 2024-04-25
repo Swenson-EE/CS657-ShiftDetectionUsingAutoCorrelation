@@ -25,7 +25,8 @@ void ReadPGM(char* FileName, int* xdimension, int* ydimension, int* MaxRaw, imag
 
 
     /* begin reading PGM.... */
-    printf("begin reading PGM.... \n");
+    //printf("begin reading PGM.... \n");
+    DEBUG_LOG(READ_PGM_TAG, "Begin reading PGM (%s)", FileName);
     if ((fp=fopen(FileName, "rb"))==NULL)
     {
         printf("read error...\n");
