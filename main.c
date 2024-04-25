@@ -19,6 +19,7 @@ By: Jesse Yeomans and Tyler Swenson
 
 #include "shift-image.h"
 #include "zero-padding.h"
+#include "center-low-freq.h"
 
 #include "dft.h"
 #include "idft.h"
@@ -118,21 +119,32 @@ int main(int argc, char **argv)
   // -------------------------------------------------------------------- //
 
 
-  // zeropad_info_t ZeropadInfo = {
-  //   .InImage = InputImage,
+  zeropad_info_t ZeropadInfo = {
+    .InImage = InputImage,
+    .Width = Width,
+    .Height = Height,
+    .PaddedWidth = PaddedWidth,
+    .PaddedHeight = PaddedHeight,
+    .OutImage = &ZeropaddedImage,
+  };
+
+  Zeropad(&ZeropadInfo);
+  WritePGM("Zeropad.pgm", PaddedWidth, PaddedHeight, ZeropaddedImage);
+
+  // center_low_freq_info_t CenterInfo = {
+  //   .InImage = ZeropaddedImage,
   //   .Width = Width,
   //   .Height = Height,
-  //   .PaddedWidth = PaddedWidth,
-  //   .PaddedHeight = PaddedHeight,
-  //   .OutImage = &ZeropaddedImage,
   // };
 
-  // Zeropad(&ZeropadInfo);
-  // WritePGM("Zeropad.pgm", PaddedWidth, PaddedHeight, ZeropaddedImage);
+  // CenterLowFrequencies(&CenterInfo);
+  // WritePGM("CenterLowFreq.pgm", PaddedWidth, PaddedHeight, ZeropaddedImage);
 
-  // DFT2D(ZeropaddedImage, PaddedWidth, PaddedHeight, &DFT);
-  // IDFT2D(DFT, PaddedWidth, PaddedHeight, &IDFT, &Output);
-  // WritePGM(OutputFileName, PaddedWidth, PaddedHeight, Output);
+
+
+  DFT2D(ZeropaddedImage, PaddedWidth, PaddedHeight, &DFT);
+  IDFT2D(DFT, PaddedWidth, PaddedHeight, &IDFT, &Output);
+  WritePGM(OutputFileName, PaddedWidth, PaddedHeight, Output);
 
   // -------------------------------------------------------------------- //
   //                                                                      //

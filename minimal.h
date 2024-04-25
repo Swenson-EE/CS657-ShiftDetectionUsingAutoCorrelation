@@ -41,6 +41,7 @@
 #define DFT_TAG                     "DFT"
 #define IDFT_TAG                    "IDFT"
 #define ZERO_PAD_TAG                "ZERO PADDING"
+#define CENTER_FREQ_TAG             "CENTER FREQ"
 
 #define READ_PGM_TAG                "READ PGM"
 #define WRITE_PGM_TAG               "WRITE PGM"
