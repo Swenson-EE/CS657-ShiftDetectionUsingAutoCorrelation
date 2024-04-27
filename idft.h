@@ -72,7 +72,7 @@ void IDFT2D(complex_t* DFT, int Width, int Height, complex_t** OutIDFT, image_t*
 
     MN_Inverse = 1 / (double)(Width * Height);
 
-
+    DEBUG_LOG(IDFT_TAG, "1");
     // Calculate IDFT for rows
     for (y = 0; y < Height; y++)
     {
@@ -95,13 +95,17 @@ void IDFT2D(complex_t* DFT, int Width, int Height, complex_t** OutIDFT, image_t*
                 Sum.Imag += (DFT_Real * SinValue) - (DFT_Real * CosValue);
 
             }
+
+            IDFT_Image[y * Width + x].Real = Sum.Real * MN_Inverse;
+            IDFT_Image[y * Width + x].Imag = Sum.Imag * MN_Inverse;
+
             Mag = sqrt((Sum.Real * Sum.Real) + (Sum.Imag * Sum.Imag));
 
             Output[y * Width + x] = (unsigned char) (255 * Mag * MN_Inverse);
 
         }
     }
-
+    DEBUG_LOG(IDFT_TAG, "2");
 
 
     // Calculate IDFT for columns
@@ -124,6 +128,9 @@ void IDFT2D(complex_t* DFT, int Width, int Height, complex_t** OutIDFT, image_t*
                 Sum.Real += (DFT_Real * CosValue) - (DFT_Imag * SinValue);
                 Sum.Imag += (DFT_Real * SinValue) + (DFT_Imag * CosValue);
             }
+            IDFT_Image[y * Width + x].Real += Sum.Real * MN_Inverse;
+            IDFT_Image[y * Width + x].Imag += Sum.Imag * MN_Inverse;
+
 
             Mag = sqrt((Sum.Real * Sum.Real) + (Sum.Imag * Sum.Imag));
 
@@ -131,7 +138,7 @@ void IDFT2D(complex_t* DFT, int Width, int Height, complex_t** OutIDFT, image_t*
 
         }
     }
-
+    DEBUG_LOG(IDFT_TAG, "3");
 
     DEBUG_LOG(IDFT_TAG, "End");
 }

@@ -25,17 +25,25 @@ By: Jesse Yeomans and Tyler Swenson
 #include "dft.h"
 #include "idft.h"
 
+#include "cross-power-spectrum.h"
+#include "image-correlation.h"
+
 
 
 image_info_t f1;
 image_info_t f2;
+complex_t* Suv; // Power-Spectral-Density
+
 
 int maxraw;
 int x_shift, y_shift;
+int calc_x_shift, calc_y_shift;
 
 
 int main(int argc, char **argv)
 {
+    int ImageWidth, ImageHeight;
+
     
     // Assign main arguments for testing
     argc = 4;
@@ -61,15 +69,24 @@ int main(int argc, char **argv)
 
     
     // Read in image
-    ReadPGM(InputFileName, &(f1.Width), &(f1.Height), &maxraw, &(f1.Image));
-    printf("Read Image: width: %d, height: %d\n\n", f1.Width, f1.Height);
+    ReadPGM(InputFileName, &ImageWidth, &ImageHeight, &maxraw, &(f1.Image));
+    printf("Read Image: width: %d, height: %d\n\n", ImageWidth, ImageHeight);
+
+    f1.Width = ImageWidth;
+    f1.Height = ImageHeight;
+
+    f2.Width = ImageWidth;
+    f2.Height = ImageHeight;
+
 
 
     // TODO: our application here
 
+    
+
     // Shift image
-    f2.Width = f1.Width;
-    f2.Height = f1.Height;
+    //f2.Width = f1.Width;
+    //f2.Height = f1.Height;
 
     image_shift_info_t shift_info = {
         .InImage = f1.Image,
@@ -103,6 +120,40 @@ int main(int argc, char **argv)
 
     DFT2D(&dft2_config);
 
+
+    // Calculate cross-power-spectrum between both images
+    image_info_t ImageInfo1 = {
+        .Image = (f1.Image),
+        .Width = ImageWidth,
+        .Height = ImageHeight,
+        .DFT = (f1.DFT)
+    };
+
+    image_info_t ImageInfo2 = {
+        .Image = (f2.Image),
+        .Width = ImageWidth,
+        .Height = ImageHeight,
+        .DFT = (f2.DFT)
+    };
+
+    cross_power_info_t CrossPowerInfo = {
+        .Image1 = &ImageInfo1,
+        .Image2 = &ImageInfo2,
+        .OutPowerSpectrum = &Suv,
+    };
+    CrossPowerSpectrum(&CrossPowerInfo);
+
+
+    // Calculate Image Correlation
+    image_correlation_info_t CorrelationInfo = {
+        .S = Suv,
+        .Width = ImageWidth,
+        .Height = ImageHeight,
+        .OutXShift = &calc_x_shift,
+        .OutYShift = &calc_y_shift,
+    };
+
+    ImageCorrelation(&CorrelationInfo);
 
 
 

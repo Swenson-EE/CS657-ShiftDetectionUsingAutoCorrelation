@@ -49,9 +49,9 @@ void DFT2D(dft_config_t* config)
     }
 
 
-    if (*OutDFT)
+    if (*(config->OutDFT))
     {
-        DFT = *OutDFT;
+        DFT = *(config->OutDFT);
     }
     else
     {
@@ -62,7 +62,7 @@ void DFT2D(dft_config_t* config)
             exit(1);
         }
 
-        *OutDFT = DFT;
+        *(config->OutDFT) = DFT;
     }
 
 

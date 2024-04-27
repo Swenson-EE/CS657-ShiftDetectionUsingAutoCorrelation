@@ -11,6 +11,8 @@ typedef struct
     complex_t** OutPowerSpectrum;
 } cross_power_info_t;
 
+
+/*
 void CrossPowerSpectrum(cross_power_info_t* Info)
 {
     complex_t* DFT1 = (Info->Image1)->DFT;
@@ -40,7 +42,70 @@ void CrossPowerSpectrum(cross_power_info_t* Info)
         DFT_F3[index].Imag /= mag;
     }
     
-    *OutPowerSpectrum = DFT_F3;
+    *(Info->OutPowerSpectrum) = DFT_F3;
 }
+*/
+
+void CrossPowerSpectrum(cross_power_info_t* Info)
+{
+    complex_t *DFT1, *DFT2;
+    double F1_Real, F1_Imag;
+    double F2_Real, F2_Imag;
+    double Mag;
+    int Width, Height;
+    complex_t *S;
+    double S_Real, S_Imag;
+
+    DFT1 = (Info->Image1)->DFT;
+    DFT2 = (Info->Image2)->DFT;
+
+    Width = (Info->Image1)->Width;
+    Height = (Info->Image1)->Height;
+
+
+    DEBUG_LOG(POWER_SPECTRUM_TAG, "Start");
+
+
+    S = (complex_t*) malloc(sizeof(complex_t) * Width * Height);
+    if (S)
+    {
+        *(Info->OutPowerSpectrum) = S;
+    }
+    else
+    {
+        printf("Could not allocate memory for S (Power Spectral Density)\n");
+        exit(1);
+    }
+
+    
+
+    for (int i = 0; i < Width * Height; i++)
+    {
+        F1_Real = DFT1[i].Real;
+        F1_Imag = DFT1[i].Imag;
+        F2_Real = DFT2[i].Real;
+        F2_Imag = DFT2[i].Imag;
+
+        //S[i].Real = (F1_Real * F2_Real) - (F1_Imag * F2_Imag);
+        //S[i].Imag = (F1_Real * F2_Imag) + (F1_Imag * F2_Real);
+        S_Real = (F1_Real * F2_Real) - (F1_Imag * F2_Imag);
+        S_Imag = (F1_Real * F2_Imag) + (F1_Imag * F2_Real);
+
+        Mag = sqrt( (S_Real * S_Real) + (S_Imag * S_Imag) );
+
+        S[i].Real = S_Real / Mag;
+        S[i].Imag = S_Imag / Mag;
+
+
+        
+    }
+
+    
+
+
+    DEBUG_LOG(POWER_SPECTRUM_TAG, "End");
+}
+
+
 
 #endif

@@ -43,6 +43,9 @@
 #define ZERO_PAD_TAG                "ZERO PADDING"
 #define CENTER_FREQ_TAG             "CENTER FREQ"
 
+#define POWER_SPECTRUM_TAG          "POWER SPECTRUM"
+#define IMAGE_CORRELATION_TAG       "IMAGE CORRELATION"
+
 #define READ_PGM_TAG                "READ PGM"
 #define WRITE_PGM_TAG               "WRITE PGM"
 
