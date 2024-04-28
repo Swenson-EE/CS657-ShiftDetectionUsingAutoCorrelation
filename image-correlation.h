@@ -48,7 +48,7 @@ void ImageCorrelation(image_correlation_info_t* Info)
 
     for (y = 0; y < Height; y++)
     {
-        for (x = 0; x < Width; x++)
+        for (x = 1; x < Width; x++)
         {
             Real = IDFT[y * Width + x].Real;
             Imag = IDFT[y * Width + x].Imag;
@@ -57,10 +57,10 @@ void ImageCorrelation(image_correlation_info_t* Info)
             //printf("x: %d, y: %d, Mag: %lf\n", x, y, Mag);
             //printf("x: %d, y: %d, Real: %lf, Imag: %lf, Mag: %lf\n", x, y, Real, Imag, Mag);
             //Mag = Real;
-            if (Real > MaxMag)
+            if (Mag > MaxMag)
             {
                 printf("New max mag (x: %d, y: %d, Mag: %lf)\n", x, y, Mag);
-                MaxMag = Real;
+                MaxMag = Mag;
                 x_shift = x;
                 y_shift = y;
                 //printf("New y_shift: %d\n", y);

@@ -12,10 +12,7 @@
 
 typedef struct 
 {
-    image_t* Image;
-    int Width;
-    int Height;
-    complex_t** OutDFT;
+    image_info_t* Info;
 } dft_config_t;  
 
 
@@ -33,9 +30,9 @@ void DFT2D(dft_config_t* config)
     image_t* Image;
     int Width, Height;
 
-    Image = config->Image;
-    Width = config->Width;
-    Height = config->Height;
+    Image = (config->Info)->Image;
+    Width = (config->Info)->Width;
+    Height = (config->Info)->Height;
 
 
 
@@ -49,9 +46,9 @@ void DFT2D(dft_config_t* config)
     }
 
 
-    if (*(config->OutDFT))
+    if ((config->Info)->DFT)
     {
-        DFT = *(config->OutDFT);
+        DFT = (config->Info)->DFT;
     }
     else
     {
@@ -62,7 +59,7 @@ void DFT2D(dft_config_t* config)
             exit(1);
         }
 
-        *(config->OutDFT) = DFT;
+        (config->Info)->DFT = DFT;
     }
 
 

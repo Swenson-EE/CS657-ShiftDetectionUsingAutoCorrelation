@@ -6,9 +6,10 @@
 
 typedef struct
 {
-    image_t* InImage;
-    int Width;
-    int Height;
+    // image_t* InImage;
+    // int Width;
+    // int Height;
+    image_info_t* ImageInfo;
 } center_low_freq_info_t;
 
 
@@ -21,9 +22,9 @@ void CenterLowFrequencies(center_low_freq_info_t* Info)
     int Width;
     int Height;
 
-    Image = Info->InImage;
-    Width = Info->Width;
-    Height = Info->Height;
+    Image = (Info->ImageInfo)->Image;
+    Width = (Info->ImageInfo)->Width;
+    Height = (Info->ImageInfo)->Height;
 
 
     DEBUG_LOG(CENTER_FREQ_TAG, "Start");

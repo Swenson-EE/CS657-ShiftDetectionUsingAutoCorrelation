@@ -79,6 +79,9 @@ void CrossPowerSpectrum(cross_power_info_t* Info)
 
     
 
+    complex_t Ns, Ds;
+    double Mag1, Mag2;
+
     for (int i = 0; i < Width * Height; i++)
     {
         F1_Real = DFT1[i].Real;
@@ -86,16 +89,37 @@ void CrossPowerSpectrum(cross_power_info_t* Info)
         F2_Real = DFT2[i].Real;
         F2_Imag = DFT2[i].Imag;
 
+        Mag1 = sqrt((F1_Real * F1_Real) + (F1_Imag * F1_Imag));
+        Mag2 = sqrt((F2_Real * F2_Real) + (F2_Imag * F2_Imag));
+
         //S[i].Real = (F1_Real * F2_Real) - (F1_Imag * F2_Imag);
         //S[i].Imag = (F1_Real * F2_Imag) + (F1_Imag * F2_Real);
-        S_Real = (F1_Real * F2_Real) - (F1_Imag * F2_Imag);
-        S_Imag = (F1_Real * F2_Imag) + (F1_Imag * F2_Real);
 
-        Mag = sqrt( (S_Real * S_Real) + (S_Imag * S_Imag) );
+        
 
-        S[i].Real = S_Real / Mag;
-        S[i].Imag = S_Imag / Mag;
+        // S_Real = (F1_Real * F2_Real) - (F1_Imag * F2_Imag);
+        // S_Imag = (F1_Real * F2_Imag) + (F1_Imag * F2_Real);
 
+        // Mag = sqrt( (S_Real * S_Real) + (S_Imag * S_Imag) );
+
+        // S[i].Real = S_Real / Mag;
+        // S[i].Imag = S_Imag / Mag;
+
+
+        // Calculate cross-power numerator
+        // Use conjugate of F2
+        Ns.Real = (F1_Real * F2_Real) - (F1_Imag * (-F2_Imag));
+        Ns.Imag = (F1_Real * (-F2_Imag)) + (F1_Imag * F2_Real);
+
+        // Calculate cross-power denomenator
+        Ds.Real = (F1_Real * F2_Real) - (F1_Imag * F2_Imag);
+        Ds.Imag = (F1_Real * F2_Imag) + (F1_Imag * F2_Real);
+        //Mag = sqrt( (Ds.Real * Ds.Real) + (Ds.Imag * Ds.Imag) );
+        Mag = Mag1 * Mag2;
+
+        // Put cross-power spectrum together
+        S[i].Real = Ns.Real / Mag;
+        S[i].Imag = Ns.Imag / Mag;
 
         
     }

@@ -8,12 +8,14 @@
 
 
 typedef struct {
-    image_t* InImage;
-    int Width;
-    int Height;
-    int PaddedWidth;
-    int PaddedHeight;
-    image_t** OutImage;
+    // image_t* InImage;
+    // int Width;
+    // int Height;
+    // int PaddedWidth;
+    // int PaddedHeight;
+    // image_t** OutImage;
+    image_info_t* OriginalImageInfo;
+    image_info_t* PaddedImageInfo;
 } zeropad_info_t;
 
 
@@ -22,27 +24,31 @@ typedef struct {
 void Zeropad(zeropad_info_t* PaddingInfo)
 {
     int x, y;           // x, y
-    image_t* InImage;
-    image_t* OutputImage;
+    image_t *InImage, *OutputImage;
+    image_info_t *InInfo, *OutInfo;
     int Width, Height;
     int PaddedWidth, PaddedHeight;
     
     DEBUG_LOG(ZERO_PAD_TAG, "Start");
 
-    InImage = PaddingInfo->InImage;
-    Width = PaddingInfo->Width;
-    Height = PaddingInfo->Height;
-    PaddedWidth = PaddingInfo->PaddedWidth;
-    PaddedHeight = PaddingInfo->PaddedHeight;
+    InInfo = PaddingInfo->OriginalImageInfo;
+    OutInfo = PaddingInfo->PaddedImageInfo;
+
+
+    InImage = InInfo->Image;
+    Width = InInfo->Width;
+    Height = InInfo->Height;
+    PaddedWidth = OutInfo->Width;
+    PaddedHeight = OutInfo->Height;
 
     DEBUG_DATA_LOG(ZERO_PAD_TAG, "Width: %d, Height: %d", Width, Height);
     DEBUG_DATA_LOG(ZERO_PAD_TAG, "PaddedWidth: %d, PaddedHeight: %d", PaddedWidth, PaddedHeight);
 
 
 
-    if (*(PaddingInfo->OutImage))
+    if (OutInfo->Image)
     {
-        OutputImage = *(PaddingInfo->OutImage);
+        OutputImage = (OutInfo->Image);
     }
     else
     {
@@ -53,7 +59,7 @@ void Zeropad(zeropad_info_t* PaddingInfo)
             exit(1);
         }
         
-        *(PaddingInfo->OutImage) = OutputImage;
+        (OutInfo->Image) = OutputImage;
     }
 
 

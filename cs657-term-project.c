@@ -32,6 +32,10 @@ By: Jesse Yeomans and Tyler Swenson
 
 image_info_t f1;
 image_info_t f2;
+
+image_info_t f1_padded;
+image_info_t f2_padded;
+
 complex_t* Suv; // Power-Spectral-Density
 
 
@@ -43,6 +47,7 @@ int calc_x_shift, calc_y_shift;
 int main(int argc, char **argv)
 {
     int ImageWidth, ImageHeight;
+    int WidthPadded, HeightPadded;
 
     
     // Assign main arguments for testing
@@ -64,9 +69,10 @@ int main(int argc, char **argv)
     char* ShiftedFileName = argv[2];
     char* OutputFileName  = argv[3];
 
-    x_shift = 100;
-    y_shift = 100;
+    x_shift = 10;
+    y_shift = 10;
 
+   
     
     // Read in image
     ReadPGM(InputFileName, &ImageWidth, &ImageHeight, &maxraw, &(f1.Image));
@@ -99,29 +105,74 @@ int main(int argc, char **argv)
 
     ShiftImage(&shift_info);
 
+    
+    // Zero-Pad Images
+    // WidthPadded = (ImageWidth * 2) - 1;
+    // HeightPadded = (ImageHeight * 2) - 1;
+
+    // f1_padded.Width = WidthPadded;
+    // f1_padded.Height = HeightPadded;
+
+    // f2_padded.Width = WidthPadded;
+    // f2_padded.Height = HeightPadded;
+
+    // zeropad_info_t padding_info1 = {
+    //     .OriginalImageInfo = &f1,
+    //     .PaddedImageInfo = &f1_padded,
+    // };
+    // Zeropad(&padding_info1);
+
+    // zeropad_info_t padding_info2 = {
+    //     .OriginalImageInfo = &f2,
+    //     .PaddedImageInfo = &f2_padded,
+    // };
+    // Zeropad(&padding_info2);
+
+
+
+    // // Center low freq
+    // center_low_freq_info_t center1 = {
+    //     .ImageInfo = &f1_padded,
+    // };
+    // CenterLowFrequencies(&center1);
+
+    // center_low_freq_info_t center2 = {
+    //     .ImageInfo = &f2_padded,
+    // };
+    // CenterLowFrequencies(&center2);
+
+
+
 
     // Calculate DFT for both images
     dft_config_t dft1_config = {
-        .Image = f1.Image,
-        .Width = f1.Width,
-        .Height = f1.Height,
-        .OutDFT = &(f1.DFT),
+        // .Image = f1.Image,
+        // .Width = f1.Width,
+        // .Height = f1.Height,
+        // .OutDFT = &(f1.DFT),
+        
+        .Info = &f1,
+        // .Info = &f1_padded,
     };
 
     DFT2D(&dft1_config);
 
     
     dft_config_t dft2_config = {
-        .Image = f2.Image,
-        .Width = f2.Width,
-        .Height = f2.Height,
-        .OutDFT = &(f2.DFT),
+        // .Image = f2.Image,
+        // .Width = f2.Width,
+        // .Height = f2.Height,
+        // .OutDFT = &(f2.DFT),
+        
+        .Info = &f2,
+        // .Info = &f2_padded,
     };
 
     DFT2D(&dft2_config);
 
 
     // Calculate cross-power-spectrum between both images
+    /*
     image_info_t ImageInfo1 = {
         .Image = (f1.Image),
         .Width = ImageWidth,
@@ -135,10 +186,14 @@ int main(int argc, char **argv)
         .Height = ImageHeight,
         .DFT = (f2.DFT)
     };
+    */
 
     cross_power_info_t CrossPowerInfo = {
-        .Image1 = &ImageInfo1,
-        .Image2 = &ImageInfo2,
+        .Image1 = &f1,
+        .Image2 = &f2,
+        // .Image1 = &f1_padded,
+        // .Image2 = &f2_padded,
+
         .OutPowerSpectrum = &Suv,
     };
     CrossPowerSpectrum(&CrossPowerInfo);
@@ -149,6 +204,8 @@ int main(int argc, char **argv)
         .S = Suv,
         .Width = ImageWidth,
         .Height = ImageHeight,
+        // .Width = WidthPadded,
+        // .Height = HeightPadded,
         .OutXShift = &calc_x_shift,
         .OutYShift = &calc_y_shift,
     };
@@ -161,6 +218,18 @@ int main(int argc, char **argv)
     free(f1.Image);
     free(f1.DFT);
 
+    free (f2.Image);
+    free(f2.Image);
+
+    free(f1_padded.Image);
+    free(f1_padded.DFT);
+
+    free(f2_padded.Image);
+    free(f2_padded.DFT);
+
+
+
+    free(Suv);
 
 
     return (0);
